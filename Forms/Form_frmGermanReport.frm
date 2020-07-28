@@ -65,7 +65,7 @@ End Sub
 
 Sub parseVars()
 Dim varValue As String
-Dim ctl As control
+Dim ctl As Control
 Dim i As Integer
 Dim sql As String
 Dim rs As ADODB.Recordset
@@ -105,7 +105,7 @@ End Sub
 
 
 Private Sub ReplaceVar(varName As String, value As String)
-Dim ctl As Access.control
+Dim ctl As Access.Control
 Dim found As Boolean
 
 On Error GoTo err_trap

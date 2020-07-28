@@ -394,7 +394,7 @@ Dim i As Integer
 Dim theDate As Date
 Dim n As Integer
 Dim rs As ADODB.Recordset
-Dim ctl As Access.control
+Dim ctl As Access.Control
 Set db = CurrentDb
 Dim theDay As String
 Dim tranOrder As clsTransportOrder

@@ -105,4 +105,3 @@ DoCmd.RunSQL "DELETE * FROM tbCmr WHERE cmrId = " & cmr
 DoCmd.RunSQL "DELETE * FROM tbDeliveryDetail WHERE cmrDetailId = " & detailId
 DoCmd.SetWarnings True
 End Sub
-

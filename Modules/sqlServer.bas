@@ -173,4 +173,3 @@ End If
 
 DoCmd.TransferDatabase acImport, "ODBC Database", stConnect, acTable, tableName, tableName & "Local"
 End Sub
-

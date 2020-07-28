@@ -11,19 +11,21 @@ Option Compare Database
 Option Explicit
 
 Private Sub btnTrash_Click()
-If authorize(getFunctionId("TRANSPORT_ADDITIONAL_INFO_DELETE"), whoIsLogged) Then
-    DeleteMessage
+Dim res As VbMsgBoxResult
+Dim cmr As Long
+Dim detailId As Long
+
+If whoIsLogged = Me.txtUserid Then
+        
+    res = MsgBox("Czy na pewno chcesz usunąć ten komentarz? Tego kroku nie będzie można cofnąć.", vbYesNo + vbExclamation, "Potwierdź usunięcie")
+    If res = vbYes Then
+        
+        updateConnection
+        adoConn.Execute "DELETE FROM tbTransportNotes WHERE inputBy =" & Me.txtUserid
+        Form_frmTransport.RefreshMe
+    End If
 Else
-    MsgBox "Brak autoryzacji", vbOKOnly + vbInformation, "Brak autoryzacji"
+    MsgBox "Możesz usuwać tylko swoje komentarze..", vbOKOnly + vbInformation, "Brak autoryzacji"
 End If
-End Sub
-
-Sub DeleteMessage()
-DoCmd.SetWarnings False
-DoCmd.RunSQL "DELETE * FROM tbTransportNotes WHERE transportNotesId = " & Me.txtId.value
-DoCmd.SetWarnings True
-Me.Parent.Requery
-Me.Parent.Refresh
-
 End Sub
 

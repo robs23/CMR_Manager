@@ -368,7 +368,7 @@ Resume Exit_here
 End Sub
 
 Sub clearall()
-Dim ctl As control
+Dim ctl As Control
 
 For Each ctl In Me.Controls
     If ctl.ControlType = acTextBox Then
@@ -622,7 +622,7 @@ If str <> "" Then Me.Caption = Me.Caption & " || " & str
 End Sub
 
 Sub changeLock(bool As Boolean)
-Dim ctl As control
+Dim ctl As Control
 
 For Each ctl In Me.Controls
     If ctl.ControlType = acTextBox Or ctl.ControlType = acComboBox Or ctl.ControlType = acCheckBox Or ctl.ControlType = acListBox Or ctl.ControlType = acCommandButton Then

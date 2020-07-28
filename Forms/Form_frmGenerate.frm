@@ -39,11 +39,12 @@ If Not IsMissing(country) Then
     If IsNull(country) Then
         sql = "SELECT car.carrierId, cd.companyName, cd.companyAddress FROM tbCarriers car LEFT JOIN tbCompanyDetails cd ON car.companyId = cd.companyId WHERE cd.companyId IS NOT NULL"
     Else
-       sql = "SELECT car.carrierId, cd.companyName, cd.companyAddress FROM tbCarriers car LEFT JOIN tbCompanyDetails cd ON car.companyId=cd.companyId WHERE cd.companyId IS NOT NULL AND car.carrierId IN (" _
-        & "SELECT DISTINCT custSh.PrimaryCarrier FROM tbShipTo custSh LEFT JOIN tbCompanyDetails custCd ON custSh.companyId = custCd.companyId WHERE custCd.companyCountry = '" & country & "') " _
-        & "UNION " _
-        & "SELECT car.carrierId, cd.companyName, cd.companyAddress FROM tbCarriers car LEFT JOIN tbCompanyDetails cd ON car.companyId=cd.companyId WHERE cd.companyId IS NOT NULL AND car.carrierId IN ( " _
-        & "SELECT DISTINCT custSh.supportiveCarrier FROM tbShipTo custSh LEFT JOIN tbCompanyDetails custCd ON custSh.companyId = custCd.companyId WHERE custCd.companyCountry = '" & country & "')"
+       sql = "SELECT carrierId, companyName, companyAddress FROM " _
+            & "(SELECT TOP 1000 car.carrierId, cd.companyName, cd.companyAddress, " _
+            & "CASE WHEN car.carrierId IN (SELECT DISTINCT custSh.PrimaryCarrier FROM tbShipTo custSh LEFT JOIN tbCompanyDetails custCd ON custSh.companyId = custCd.companyId WHERE custCd.companyCountry = '" & country & "') THEN 1 ELSE 0 END as PrimaryCarrier, " _
+            & "CASE WHEN car.carrierId IN (SELECT DISTINCT custSh.supportiveCarrier FROM tbShipTo custSh LEFT JOIN tbCompanyDetails custCd ON custSh.companyId = custCd.companyId WHERE custCd.companyCountry = '" & country & "') THEN 1 ELSE 0 END as SupportiveCarrier " _
+            & "FROM tbCarriers car LEFT JOIN tbCompanyDetails cd ON car.companyId = cd.companyId " _
+            & "WHERE cd.companyId Is Not Null ORDER BY PrimaryCarrier DESC, SupportiveCarrier DESC) t"
     End If
 Else
     sql = "SELECT car.carrierId, cd.companyName, cd.companyAddress FROM tbCarriers car LEFT JOIN tbCompanyDetails cd ON car.companyId = cd.companyId WHERE cd.companyId IS NOT NULL"
@@ -118,7 +119,23 @@ Me.txtWed = DateAdd("d", 2, firstDate)
 Me.txtThu = DateAdd("d", 3, firstDate)
 Me.txtFri = DateAdd("d", 4, firstDate)
 Me.txtSat = DateAdd("d", 5, firstDate)
+clearForm
 'showHolidays
+End Sub
+
+Sub clearForm()
+Me.txtMonA = ""
+Me.txtTueA = ""
+Me.txtWedA = ""
+Me.txtThuA = ""
+Me.txtFriA = ""
+Me.txtSatA = ""
+Me.txtMonNotes = ""
+Me.txtTueNotes = ""
+Me.txtWedNotes = ""
+Me.txtThuNotes = ""
+Me.txtFriNotes = ""
+Me.txtSatNotes = ""
 End Sub
 
 Private Sub nextWeek_Click()
@@ -174,11 +191,13 @@ Dim sql As String
 Dim tb As TextBox
 Dim truck As TextBox
 Dim amount As TextBox
+Dim note As TextBox
 Dim tNow As Integer
 Dim tMax As Integer
 Dim rs As ADODB.Recordset
 Dim mStr As String
 Dim counter As Integer
+Dim lasting As Integer
 Dim thisCust As Integer
 Dim currentCust As Integer
 Dim newName As String
@@ -208,27 +227,33 @@ If validate Then
             Set tb = Me.txtMon
             Set truck = Me.txtMonA
             Set amount = Me.txtMonP
+            Set note = Me.txtMonNotes
         Case 2
             Set tb = Me.txtTue
             Set truck = Me.txtTueA
             
             Set amount = Me.txtTueP
+            Set note = Me.txtTueNotes
         Case 3
             Set tb = Me.txtWed
             Set truck = Me.txtWedA
             Set amount = Me.txtWedP
+            Set note = Me.txtWedNotes
         Case 4
             Set tb = Me.txtThu
             Set truck = Me.txtThuA
             Set amount = Me.txtThuP
+            Set note = Me.txtThuNotes
         Case 5
             Set tb = Me.txtFri
             Set truck = Me.txtFriA
             Set amount = Me.txtFriP
+            Set note = Me.txtFriNotes
         Case 6
             Set tb = Me.txtSat
             Set truck = Me.txtSatA
             Set amount = Me.txtSatP
+            Set note = Me.txtSatNotes
         End Select
         
         counter = 0
@@ -283,8 +308,8 @@ If validate Then
                         sId = CStr(highest + counter + 1)
                     End If
                     newName = CStr(year(tb.value)) & mmonth & dday & "-M024-" & Trim(locations) & "-" & sId
-                    sql = "INSERT INTO tbTransport (transportNumber, transportDate, transportStatus, carrierId, createdBy, initDate) "
-                    sql = sql & "VALUES('" & newName & "','" & tb.value & "', 1," & Me.cmbCarrier & "," & whoIsLogged & ",'" & tb.value & "')"
+                    sql = "INSERT INTO tbTransport (transportNumber, transportDate, transportStatus, carrierId, createdBy, initDate, Notes) "
+                    sql = sql & "VALUES('" & newName & "','" & tb.value & "', 1," & Me.cmbCarrier & "," & whoIsLogged & ",'" & tb.value & "','" & note.value & "')"
                     Set rs = adoConn.Execute(sql & ";SELECT SCOPE_IDENTITY()")
                     transportId = rs.fields(0).value
                     rs.Close

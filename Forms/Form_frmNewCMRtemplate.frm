@@ -165,7 +165,7 @@ End If
 End Sub
 
 Private Function fSetupMouseCtls() As Boolean
-  Dim ctl As control
+  Dim ctl As Control
   For Each ctl In Me
     If InStr(1, ctl.Name, "in", vbTextCompare) = 1 Then
       ctl.OnMouseMove = "=fBorderColor(""" & ctl.Name & """,255)"    ' vbRed = 255
@@ -175,7 +175,7 @@ Private Function fSetupMouseCtls() As Boolean
 End Function
 
 Private Function fBorderColor(strCtlName As String, lColor As Long) As Boolean
-Dim ctl As control
+Dim ctl As Control
 For Each ctl In Me.Controls
     If ctl.ControlType = acTextBox And InStr(1, ctl.Name, "in", vbTextCompare) = 1 Then
         If ctl.Name <> strCtlName Then
@@ -195,7 +195,7 @@ Next ctl
 End Function
 
 Private Function fResetBorders(Optional lDefaultColor As Long) As Boolean
-  Dim ctl As control
+  Dim ctl As Control
   For Each ctl In Me
         If InStr(1, ctl.Name, "in", vbTextCompare) = 1 Then
           If ctl.BorderColor <> lDefaultColor Then
@@ -208,7 +208,7 @@ Private Function fResetBorders(Optional lDefaultColor As Long) As Boolean
 End Function
 
 Function removeBorders() As Boolean
-  Dim ctl As control
+  Dim ctl As Control
   For Each ctl In Me
         If InStr(1, ctl.Name, "in", vbTextCompare) = 1 Then
             ctl.BorderStyle = 0
@@ -242,7 +242,7 @@ Dim i As Integer
 Dim Nazwa As String
 Dim Index As Integer
 Dim iSql As String
-Dim ctl As control
+Dim ctl As Control
 Dim fields As String
 Dim values As String
 
@@ -373,7 +373,7 @@ Resume Exit_here
 End Sub
 
 Private Sub ReplaceVar(varName As String, value As String)
-Dim ctl As Access.control
+Dim ctl As Access.Control
 Dim found As Boolean
 
 On Error GoTo err_trap

@@ -34,6 +34,7 @@ Else
 End If
 End Function
 
+
 Private Sub btnEdit_Click()
 Dim editedBy As Variant
     If authorize(getFunctionId("TRANSPORT_EDIT"), whoIsLogged) Then
@@ -198,11 +199,12 @@ If Not IsMissing(country) Then
     If IsNull(country) Then
         sql = "SELECT car.carrierId, cd.companyName, cd.companyAddress FROM tbCarriers car LEFT JOIN tbCompanyDetails cd ON car.companyId = cd.companyId WHERE cd.companyId IS NOT NULL"
     Else
-       sql = "SELECT car.carrierId, cd.companyName, cd.companyAddress FROM tbCarriers car LEFT JOIN tbCompanyDetails cd ON car.companyId=cd.companyId WHERE cd.companyId IS NOT NULL AND car.carrierId IN (" _
-        & "SELECT DISTINCT custSh.PrimaryCarrier FROM tbShipTo custSh LEFT JOIN tbCompanyDetails custCd ON custSh.companyId = custCd.companyId WHERE custCd.companyCountry = '" & country & "') " _
-        & "UNION " _
-        & "SELECT car.carrierId, cd.companyName, cd.companyAddress FROM tbCarriers car LEFT JOIN tbCompanyDetails cd ON car.companyId=cd.companyId WHERE cd.companyId IS NOT NULL AND car.carrierId IN ( " _
-        & "SELECT DISTINCT custSh.supportiveCarrier FROM tbShipTo custSh LEFT JOIN tbCompanyDetails custCd ON custSh.companyId = custCd.companyId WHERE custCd.companyCountry = '" & country & "')"
+        sql = "SELECT carrierId, companyName, companyAddress FROM " _
+            & "(SELECT TOP 1000 car.carrierId, cd.companyName, cd.companyAddress, " _
+            & "CASE WHEN car.carrierId IN (SELECT DISTINCT custSh.PrimaryCarrier FROM tbShipTo custSh LEFT JOIN tbCompanyDetails custCd ON custSh.companyId = custCd.companyId WHERE custCd.companyCountry = '" & country & "') THEN 1 ELSE 0 END as PrimaryCarrier, " _
+            & "CASE WHEN car.carrierId IN (SELECT DISTINCT custSh.supportiveCarrier FROM tbShipTo custSh LEFT JOIN tbCompanyDetails custCd ON custSh.companyId = custCd.companyId WHERE custCd.companyCountry = '" & country & "') THEN 1 ELSE 0 END as SupportiveCarrier " _
+            & "FROM tbCarriers car LEFT JOIN tbCompanyDetails cd ON car.companyId = cd.companyId " _
+            & "WHERE cd.companyId Is Not Null ORDER BY PrimaryCarrier DESC, SupportiveCarrier DESC) t"
     End If
 Else
     sql = "SELECT car.carrierId, cd.companyName, cd.companyAddress FROM tbCarriers car LEFT JOIN tbCompanyDetails cd ON car.companyId = cd.companyId WHERE cd.companyId IS NOT NULL"
@@ -312,15 +314,15 @@ If mode = 1 Then
     updateConnection
     If Len(Me.txtTruckNumbers) > 0 Then
         If forwarderID > 0 Then
-            iSql = "INSERT INTO tbTransport (transportNumber, transportDate, transportStatus, carrierId, createdBy, initDate, createdOn, truckNumbers, forwarderId) VALUES ('" & Me.txtTransportNo & "'," _
-                & "'" & Me.txtTransportDate & "'," & Me.cmbStatus & "," & Me.cmbCarrier & "," & whoIsLogged & ",'" & Me.txtTransportDate & "','" & Now & "','" & Me.txtTruckNumbers & "'," & forwarderID & ");SELECT SCOPE_IDENTITY()"
+            iSql = "INSERT INTO tbTransport (transportNumber, transportDate, transportStatus, carrierId, createdBy, initDate, createdOn, truckNumbers, forwarderId, meetsConditions, Notes) VALUES ('" & Me.txtTransportNo & "'," _
+                & "'" & Me.txtTransportDate & "'," & Me.cmbStatus & "," & Me.cmbCarrier & "," & whoIsLogged & ",'" & Me.txtTransportDate & "','" & Now & "','" & Me.txtTruckNumbers & "'," & forwarderID & "," & Me.cboxMeetsConditions & ",'" & Me.txtNotes & "');SELECT SCOPE_IDENTITY()"
         Else
-            iSql = "INSERT INTO tbTransport (transportNumber, transportDate, transportStatus, carrierId, createdBy, initDate, createdOn, truckNumbers) VALUES ('" & Me.txtTransportNo & "'," _
-                & "'" & Me.txtTransportDate & "'," & Me.cmbStatus & "," & Me.cmbCarrier & "," & whoIsLogged & ",'" & Me.txtTransportDate & "','" & Now & "','" & Me.txtTruckNumbers & "');SELECT SCOPE_IDENTITY()"
+            iSql = "INSERT INTO tbTransport (transportNumber, transportDate, transportStatus, carrierId, createdBy, initDate, createdOn, truckNumbers, meetsConditions, Notes) VALUES ('" & Me.txtTransportNo & "'," _
+                & "'" & Me.txtTransportDate & "'," & Me.cmbStatus & "," & Me.cmbCarrier & "," & whoIsLogged & ",'" & Me.txtTransportDate & "','" & Now & "','" & Me.txtTruckNumbers & "'," & Me.cboxMeetsConditions & ",'" & Me.txtNotes & "');SELECT SCOPE_IDENTITY()"
         End If
     Else
-        iSql = "INSERT INTO tbTransport (transportNumber, transportDate, transportStatus, carrierId, createdBy, initDate, createdOn) VALUES ('" & Me.txtTransportNo & "'," _
-        & "'" & Me.txtTransportDate & "'," & Me.cmbStatus & "," & Me.cmbCarrier & "," & whoIsLogged & ",'" & Me.txtTransportDate & "','" & Now & "');SELECT SCOPE_IDENTITY()"
+        iSql = "INSERT INTO tbTransport (transportNumber, transportDate, transportStatus, carrierId, createdBy, initDate, createdOn, meetsConditions, Notes) VALUES ('" & Me.txtTransportNo & "'," _
+        & "'" & Me.txtTransportDate & "'," & Me.cmbStatus & "," & Me.cmbCarrier & "," & whoIsLogged & ",'" & Me.txtTransportDate & "','" & Now & "'," & Me.cboxMeetsConditions & ",'" & Me.txtNotes & "');SELECT SCOPE_IDENTITY()"
     End If
     Set rs = adoConn.Execute(iSql)
     tranId = rs.fields(0).value
@@ -337,6 +339,8 @@ ElseIf mode = 2 Then
         rs.fields("lastModifiedBy") = whoIsLogged
         rs.fields("truckNumbers") = Me.txtTruckNumbers
         rs.fields("forwarderId") = forwarderID
+        rs.fields("meetsConditions") = Me.cboxMeetsConditions
+        rs.fields("Notes") = Me.txtNotes
         rs.UpdateBatch adAffectCurrent
         rs.Close
         edit
@@ -422,6 +426,8 @@ If Not rs.EOF Then
         forwarder = bringForwarder(rs.fields("truckNumbers"))
         If Not IsNull(forwarder) Then Me.txtForwarder.value = forwarder
     End If
+    Me.cboxMeetsConditions = rs.fields("meetsConditions")
+    Me.txtNotes = rs.fields("Notes")
 End If
 rs.Close
 Set rs = Nothing

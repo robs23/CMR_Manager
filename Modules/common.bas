@@ -1,5 +1,4 @@
 ﻿Attribute VB_Name = "common"
-
 Option Compare Database
 Option Explicit
 
@@ -1566,7 +1565,7 @@ Set rs = Nothing
 End Function
 
 Public Sub enableDisable(frm As Form, enable As Boolean)
-Dim ctl As Access.control
+Dim ctl As Access.Control
 For Each ctl In frm.Controls
     If ctl.ControlType = acCheckBox Or ctl.ControlType = acTextBox Or ctl.ControlType = acComboBox Or ctl.ControlType = acOptionButton Then
         ctl.Enabled = enable
@@ -2021,7 +2020,7 @@ End Sub
 
 
 Public Function saveFields(frm As Form) As Collection
-Dim ctl As Access.control
+Dim ctl As Access.Control
 Dim fld As clsField
 Dim flds As New Collection
 
@@ -2038,7 +2037,7 @@ Set saveFields = flds
 End Function
 
 Public Sub updateFields(frm As Form, col As Collection)
-Dim ctl As Access.control
+Dim ctl As Access.Control
 Dim fld As clsField
 
 For Each ctl In frm.Controls
@@ -2186,3 +2185,4 @@ Next i
 validateString = str
 
 End Function
+

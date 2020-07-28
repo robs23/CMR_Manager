@@ -66,7 +66,7 @@ End Sub
 'End Sub
 
 Private Sub resultTB_Click()
-Dim ctl As control
+Dim ctl As Control
 
 On Error GoTo err_trap
 
@@ -154,7 +154,7 @@ Public Sub init_properties(searchTxt As Access.TextBox, searchQuery As String, r
 Dim v() As String
 Dim g As Integer
 Dim i As Integer
-Dim ctl As control
+Dim ctl As Control
 Dim db As DAO.Database
 
 
@@ -234,7 +234,7 @@ Dim tempFrmName As String
 Dim totalWidth As Long
 Dim found As Boolean
 Dim d As Long
-Dim ctl As control
+Dim ctl As Control
 Dim n As Integer
 Dim i As Integer
 Dim g As Integer
@@ -433,7 +433,7 @@ End Function
 
 Private Function adjustWidth()
 Dim totalWidth As Long
-Dim ctl As control
+Dim ctl As Control
 
 For Each ctl In frm.Controls
     If ctl.ControlType = acTextBox And ctl.ColumnHidden = False Then totalWidth = totalWidth + frm.Controls(ctl.Name).ColumnWidth
@@ -453,7 +453,7 @@ End Function
 
 Private Function adjustHeight()
 Dim totalHeight As Long
-Dim ctl As control
+Dim ctl As Control
 
 For Each ctl In frm.Controls
     If ctl.ControlType = acTextBox Then

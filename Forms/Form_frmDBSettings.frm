@@ -49,6 +49,10 @@ End Sub
 
 
 
+Private Sub Command3_Click()
+
+End Sub
+
 Private Sub Form_Load()
 Call killForm("frmNotify")
 If DLookup("[propertyValue]=True", "tbDBSettings", "[propertyName] = 'inDevelopment'") Then

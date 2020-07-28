@@ -35,7 +35,7 @@ allFieldsFilled = bool
 End Function
 
 Sub clearall()
-Dim ctl As control
+Dim ctl As Control
 
 For Each ctl In Me.Controls
     If ctl.ControlType = acTextBox Then

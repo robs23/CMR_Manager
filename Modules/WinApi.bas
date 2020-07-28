@@ -108,4 +108,3 @@ Sub MoveFormToCursorPos(Form As Access.Form)
   MoveFormToScreenPixelPos Form, Pos.x, Pos.y
 End Sub
 
-

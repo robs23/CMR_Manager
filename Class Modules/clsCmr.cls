@@ -897,7 +897,7 @@ End Sub
 Private Sub hideUnparsed()
 'hides custom vars that haven't been assigned any value so they are not  printed
 Dim frm As Form
-Dim ctl As control
+Dim ctl As Control
 Dim s As Long
 Dim e As Long
 Dim var As String

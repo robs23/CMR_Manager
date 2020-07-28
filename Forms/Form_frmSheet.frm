@@ -14,7 +14,7 @@ Private Sub bthShowMore_Click()
 Dim highest As Integer
 Dim newHighest As String
 
-Dim ctl As control
+Dim ctl As Control
 For Each ctl In Me.subFrmSheet.Form.Controls
     If ctl.ControlType = acTextBox Then
         If Left(ctl.Name, 2) = "sh" And ctl.ColumnHidden = False Then
@@ -45,7 +45,7 @@ End If
 End Sub
 
 Private Sub Form_Load()
-Dim ctl As control
+Dim ctl As Control
 For Each ctl In Me.subFrmSheet.Form.Controls
     If ctl.ControlType = acTextBox Then
         If Left(ctl.Name, 2) = "sh" Then

@@ -40,7 +40,7 @@ err_trap:
 End Function
 
 
-Public Function CreateClsListener(ctrl As Access.control) As clsListener
+Public Function CreateClsListener(ctrl As Access.Control) As clsListener
 
 On Error GoTo err_trap
 

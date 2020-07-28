@@ -38,7 +38,7 @@ End Property
 '    Set AddControl = ct
 'End Function
 
-Public Sub init_properties(ctrl As Access.control)
+Public Sub init_properties(ctrl As Access.Control)
 
 Select Case ctrl.ControlType
 Case acCommandButton

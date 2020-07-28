@@ -373,7 +373,7 @@ End Sub
 
 
 Function ValidateCmr() As Boolean
-Dim ctl As Access.control
+Dim ctl As Access.Control
 Dim bool As Boolean
 Dim db As DAO.Database
 Dim rs As DAO.Recordset

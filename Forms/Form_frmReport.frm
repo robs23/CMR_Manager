@@ -39,6 +39,8 @@ Case 1
         .Controls("txtNettWeight").ControlSource = "Waga_netto"
         .Controls("txtGrossWeight").ControlSource = "Waga_brutto"
         .Controls("txtForwarder").ControlSource = "Przewoźnik"
+        .Controls("txtNotes").ControlSource = "Uwagi"
+        .Controls("txtMeetConditions").ControlSource = "Spelnia_wymagania"
     End With
 End Select
 End Sub
@@ -90,6 +92,7 @@ Me.txtDateTo.value = last
 
 sql = "SELECT t.transportDate as Data, t.transportNumber as Numer_transportu, t.truckNumbers as Numery_rejestracyjne, dd.deliveryNote as Delivery_Note, dd.weightNet as Waga_netto , " _
     & "dd.weightGross as Waga_brutto, dd.numberPall Liczba_palet, carCD.companyName as Spedytor, sh.shipToString + ' ' + shCD.companyName + ', ' + shCD.companyCity + ', ' + shCD.companyCountry as Miejsce_dostawy, REPLACE(REPLACE(REPLACE(REPLACE(dbo.udf_StripHTML((SELECT forwarderData FROM tbForwarder f WHERE f.forwarderID = (SELECT TOP(1) tru.forwarderId FROM tbTrucks tru  WHERE CHARINDEX(CONVERT(nvarchar,tru.plateNumbers),t.truckNumbers)>0))), CHAR(13), ''), CHAR(10), ','),'&quot;',''),'&amp;','&') as [Przewoźnik] " _
+    & ", t.Notes as [Uwagi], t.MeetsConditions as [Spelnia_wymagania] " _
     & "FROM tbTransport t LEFT JOIN tbCmr cmr ON cmr.transportId=t.transportId LEFT JOIN tbDeliveryDetail dd ON dd.cmrDetailId=cmr.detailId " _
     & "LEFT JOIN tbCarriers car ON car.carrierId = t.carrierId LEFT JOIN tbCompanyDetails carCD ON carCD.companyId = car.companyId " _
     & "LEFT JOIN tbShipTo sh ON sh.shipToId=dd.shipToId LEFT JOIN tbCompanyDetails shCD ON shCD.companyId=sh.companyId " _
