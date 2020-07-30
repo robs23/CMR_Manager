@@ -192,6 +192,7 @@ Dim tb As TextBox
 Dim truck As TextBox
 Dim amount As TextBox
 Dim note As TextBox
+Dim ttruck As Integer
 Dim tNow As Integer
 Dim tMax As Integer
 Dim rs As ADODB.Recordset
@@ -256,10 +257,16 @@ If validate Then
             Set note = Me.txtSatNotes
         End Select
         
+        If Len(truck.value) = 0 Then
+            ttruck = 0
+        Else
+            ttruck = CInt(truck.value)
+        End If
+        
         counter = 0
         currentCust = 0
         tNow = 0
-        If truck > 0 Then
+        If ttruck > 0 Then
             tMax = getMaxSlot(tb.value)
             If Day(tb.value) < 10 Then
                 dday = "0" & CStr(Day(tb.value))
@@ -299,7 +306,8 @@ If validate Then
             Set rs = Nothing
             If tNow < tMax Then
                 'we can add at least 1 truck
-                lasting = truck
+                lasting = ttruck
+                
                 updateConnection
                 Do Until tNow = tMax Or lasting = 0
                     If highest + counter + 1 < 10 Then
@@ -324,7 +332,7 @@ If validate Then
                     If Len(aStr) = 0 Then
                         aStr = "Z powodu ograniczonej liczby slotów nie wszystkie zlecenia zostały utworzone!" & vbNewLine
                     End If
-                    mStr = mStr & " (" & truck - counter & " mniej)"
+                    mStr = mStr & " (" & ttruck - counter & " mniej)"
                 End If
             Else
                 mStr = mStr & vbNewLine & WeekdayName(Weekday(tb.value, vbMonday)) & ": Wszystkie dostępne sloty na ten dzień (" & tMax & ") są już zajęte.. Dodano 0 zleceń"
