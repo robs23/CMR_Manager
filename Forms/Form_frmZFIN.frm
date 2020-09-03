@@ -163,6 +163,7 @@ If mode = 1 Then
             uStr = uStr & fSql(Me.cmbKlient.value, True) & ")"
             updateConnection
             Set rs = adoConn.Execute(uStr & ";SELECT SCOPE_IDENTITY()")
+            Set rs = rs.NextRecordset
             zfinId = rs.fields(0).value
             rs.Close
             Set rs = Nothing

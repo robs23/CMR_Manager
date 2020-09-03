@@ -185,6 +185,7 @@ If allFieldsFilled Then
         If IsNull(Me.txtVat) Then sql = sql & "NULL)" Else sql = sql & "'" & Me.txtVat & "',"
         If IsNull(Me.cboxActive) Then sql = sql & "NULL" Else sql = sql & Abs(Me.cboxActive) & ")"
         Set rs = adoConn.Execute(sql & ";SELECT SCOPE_IDENTITY()")
+        Set rs = rs.NextRecordset
         companyId = rs.fields(0).value
         rs.Close
         Select Case theType
@@ -192,12 +193,14 @@ If allFieldsFilled Then
                 sql = "INSERT INTO tbSoldTo (companyId, soldToString) VALUES (" & companyId & ","
                 If IsNull(Me.txtNumber) Then sql = sql & "NULL)" Else sql = sql & "'" & validateString(Me.txtNumber) & "')"
                 Set rs = adoConn.Execute(sql & ";SELECT SCOPE_IDENTITY()")
+                Set rs = rs.NextRecordset
                 subCompId = rs.fields(0).value
                 rs.Close
             Case 3
                 sql = "INSERT INTO tbCarriers (companyId, vendorNumber) VALUES (" & companyId & ","
                 If IsNull(Me.txtNumber) Then sql = sql & "NULL)" Else sql = sql & "'" & Me.txtNumber & "')"
                 Set rs = adoConn.Execute(sql & ";SELECT SCOPE_IDENTITY()")
+                Set rs = rs.NextRecordset
                 subCompId = rs.fields(0).value
                 rs.Close
             Case 2
@@ -211,6 +214,7 @@ If allFieldsFilled Then
                 sql = sql & fSql(Me.txtBorderIn) & ","
                 sql = sql & fSql(Me.txtBorderOut) & ")"
                 Set rs = adoConn.Execute(sql & ";SELECT SCOPE_IDENTITY()")
+                Set rs = rs.NextRecordset
                 subCompId = rs.fields(0).value
                 rs.Close
                 Set rs = Nothing

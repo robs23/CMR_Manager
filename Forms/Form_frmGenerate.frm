@@ -319,6 +319,10 @@ If validate Then
                     sql = "INSERT INTO tbTransport (transportNumber, transportDate, transportStatus, carrierId, createdBy, initDate, Notes) "
                     sql = sql & "VALUES('" & newName & "','" & tb.value & "', 1," & Me.cmbCarrier & "," & whoIsLogged & ",'" & tb.value & "','" & note.value & "')"
                     Set rs = adoConn.Execute(sql & ";SELECT SCOPE_IDENTITY()")
+'                    sql = sql & ";SELECT SCOPE_IDENTITY()"
+'                    Set rs = New ADODB.Recordset
+'                    rs.Open sql, adoConn, adOpenKeyset, adLockOptimistic
+                    Set rs = rs.NextRecordset
                     transportId = rs.fields(0).value
                     rs.Close
                     Set rs = Nothing
@@ -407,6 +411,7 @@ If Not IsNull(Me.txtSatA) And IsNull(Me.txtSatP) Then Me.txtSatP = 33
 sql = "INSERT INTO tbDeliveryDetail (soldToId, shipToId, numberPall) VALUES (" & Me.Controls("cmbCustomer").Column(0) & "," & Me.Controls("cmbWarehouse").Column(0) & "," & amount & ")"
 
 Set rs = adoConn.Execute(sql & ";SELECT SCOPE_IDENTITY()")
+Set rs = rs.NextRecordset
 i = rs.fields(0).value
 
 rs.Close

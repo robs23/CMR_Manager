@@ -319,12 +319,14 @@ If mode = 1 Then
         Else
             iSql = "INSERT INTO tbTransport (transportNumber, transportDate, transportStatus, carrierId, createdBy, initDate, createdOn, truckNumbers, meetsConditions, Notes) VALUES ('" & Me.txtTransportNo & "'," _
                 & "'" & Me.txtTransportDate & "'," & Me.cmbStatus & "," & Me.cmbCarrier & "," & whoIsLogged & ",'" & Me.txtTransportDate & "','" & Now & "','" & Me.txtTruckNumbers & "'," & Me.cboxMeetsConditions & ",'" & Me.txtNotes & "');SELECT SCOPE_IDENTITY()"
+                
         End If
     Else
         iSql = "INSERT INTO tbTransport (transportNumber, transportDate, transportStatus, carrierId, createdBy, initDate, createdOn, meetsConditions, Notes) VALUES ('" & Me.txtTransportNo & "'," _
         & "'" & Me.txtTransportDate & "'," & Me.cmbStatus & "," & Me.cmbCarrier & "," & whoIsLogged & ",'" & Me.txtTransportDate & "','" & Now & "'," & Me.cboxMeetsConditions & ",'" & Me.txtNotes & "');SELECT SCOPE_IDENTITY()"
     End If
     Set rs = adoConn.Execute(iSql)
+    Set rs = rs.NextRecordset
     tranId = rs.fields(0).value
     rs.Close
     edit
@@ -475,6 +477,7 @@ If forwarderID = 0 Then
     iSql = "INSERT INTO tbForwarder (forwarderData,createdOn,createdBy) VALUES ('" & Trim(company) & "','" & Now & "'," & whoIsLogged & ");SELECT SCOPE_IDENTITY()"
     updateConnection
     Set rs = adoConn.Execute(iSql)
+    Set rs = rs.NextRecordset
     forwarderID = rs.fields(0).value
     If forwarderID <> 0 Then saveCompany = forwarderID
     rs.Close

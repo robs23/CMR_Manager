@@ -40,6 +40,7 @@ If verify Then
             iSql = iSql & fSql(Me.txtIndex, True, True) & "," & fSql(Me.txtName, , True) & "," & fSql(Me.cmbType, , True) & "," & fSql(Me.cmbCategory, True, True) & ",'" & Now & "'," & whoIsLogged & ")"
             updateConnection
             Set rs = adoConn.Execute(iSql & ";SELECT SCOPE_IDENTITY()")
+            Set rs = rs.NextRecordset
             zfinId = rs.fields(0)
             rs.Close
             Set rs = Nothing

@@ -270,6 +270,7 @@ If Len(fields) > 0 Then
     iSql = Replace(iSql, "<fields>", fields)
     iSql = Replace(iSql, "<values>", values)
     Set rs = adoConn.Execute(iSql & ";SELECT SCOPE_IDENTITY()")
+    Set rs = rs.NextRecordset
     Index = rs.fields(0).value
     rs.Close
     Set rs = Nothing

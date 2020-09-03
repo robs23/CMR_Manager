@@ -683,13 +683,16 @@ If pId = 0 Then
         iSql = iSql & fSql(.GermanyIn, forbidEmpty:=True) & ","
         iSql = iSql & fSql(.GermanyOut, forbidEmpty:=True) & ","
         iSql = iSql & fSql(.CarrierContactId, True, forbidEmpty:=True) & ")"
-        Set rs = adoConn.Execute(iSql & ";SELECT SCOPE_IDENTITY()")
+        iSql = iSql & ";SELECT SCOPE_IDENTITY()"
+        Set rs = adoConn.Execute(iSql)
+        Set rs = rs.NextRecordset
         detailId = rs.fields(0).value
         rs.Close
         Set rs = Nothing
         iSql = "INSERT INTO tbCmr (cmrCreated, userId, detailId,transportId) VALUES ("
         iSql = iSql & "'" & Now & "'," & whoIsLogged & "," & detailId & "," & Me.transportId & ")"
         Set rs = adoConn.Execute(iSql & ";SELECT SCOPE_IDENTITY()")
+        Set rs = rs.NextRecordset
         Me.ID = rs.fields(0).value
         rs.Close
         Set rs = Nothing

@@ -19,6 +19,7 @@ If verify Then
     iSql = "INSERT INTO tbZfin (zfinIndex, zfinName, zfinType, prodStatus, creationDate, createdBy) " _
         & "VALUES (" & Me.txtIndex.value & ",'" & Me.txtDesc.value & "','zfor','pr','" & Now & "'," & whoIsLogged & ")"
     Set rs = adoConn.Execute(iSql & ";SELECT SCOPE_IDENTITY()")
+    Set rs = rs.NextRecordset
     Index = rs.fields(0).value
     rs.Close
     Set rs = Nothing
