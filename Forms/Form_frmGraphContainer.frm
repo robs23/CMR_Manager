@@ -49,19 +49,19 @@ Resume Exit_here
 End Sub
 
 Sub update()
-Dim rs As ADODB.Recordset
+Dim rs As AdoDb.Recordset
 Dim theSum As Double
 Dim i As Integer
 
 Me.txtDateFrom.value = Me.cmbMonth.Column(1)
 Me.txtDateTo.value = Me.cmbMonth.Column(2)
 
-sql = "DECLARE @startDate date='" & Me.txtDateFrom.value & "', @endDate date = '" & Me.txtDateTo.value & "' " _
-    & "SELECT Sum(dd.weightNet)/1000 AS nWeight, s.soldToString + ', ' + cd.companyName + ', ' + cd.companyCountry AS cust " _
+sql = "SELECT Sum(dd.weightNet)/1000 AS nWeight, s.soldToString + ' ' + cd.companyCountry AS cust " _
     & "FROM tbCmr cmr LEFT JOIN tbDeliveryDetail dd ON cmr.detailId=dd.cmrDetailId LEFT JOIN tbSoldTo s ON dd.soldToId = s.soldToId LEFT JOIN tbCompanyDetails cd ON s.companyId = cd.companyId RIGHT JOIN tbTransport t ON cmr.transportId = t.transportId " _
-    & "WHERE t.transportDate >=@startDate And t.transportDate <= @endDate And cd.companyId Is Not Null " _
-    & "GROUP BY s.soldToString + ', ' + cd.companyName + ', ' + cd.companyCountry " _
+    & "WHERE t.transportDate >='" & Me.txtDateFrom.value & "' And t.transportDate <= '" & Me.txtDateTo.value & "' And cd.companyId Is Not Null " _
+    & "GROUP BY s.soldToString + ' ' + cd.companyCountry " _
     & "ORDER BY nWeight DESC;"
+
 Set rs = newRecordset(sql)
 Set rs.ActiveConnection = Nothing
 If Not rs.EOF Then
@@ -71,7 +71,7 @@ If Not rs.EOF Then
         i = i + 1
         If Not IsNull(rs.fields("nWeight")) Then
             theSum = theSum + rs.fields("nWeight")
-            If i <= 10 Then str = str & rs.fields("cust") & ";" & Round(rs.fields("nWeight"), 1) & ";"
+            If i <= 10 Then str = str & rs.fields("cust") & ";" & Round(rs.fields("nWeight"), 0) & ";"
 '        Else
 '            If i <= 10 Then str = str & rs.fields("cust") & ";" & 0 & ";"
         End If
@@ -193,7 +193,7 @@ End Sub
 
 Sub doCombo()
 Dim arr() As Variant
-Dim rs As ADODB.Recordset
+Dim rs As AdoDb.Recordset
 
 Set rs = newRecordset("SELECT MIN(transportDate) as dMin, MAX(transportDate) as dMax FROM tbTransport")
 Set rs.ActiveConnection = Nothing

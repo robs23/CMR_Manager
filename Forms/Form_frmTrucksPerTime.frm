@@ -47,7 +47,7 @@ End Sub
 
 
 Private Sub updateMe()
-Dim rs As ADODB.Recordset
+Dim rs As AdoDb.Recordset
 Dim sql As String
 Dim chart As Object
 Dim values As String
@@ -76,7 +76,7 @@ If validate Then
     If Me.cmbCount = "Załadunki" Then
         countStr = "COUNT(DISTINCT t.transportNumber)"
     ElseIf Me.cmbCount = "Tony" Then
-        countStr = "ROUND(SUM(dd.weightNet/1000),1)"
+        countStr = "ROUND(SUM(dd.weightNet/1000),0)"
     ElseIf Me.cmbCount = "Palety" Then
         countStr = "SUM(dd.numberPall)"
     End If

@@ -48,16 +48,15 @@ End Sub
 
 
 Sub update()
-Dim rs As ADODB.Recordset
+Dim rs As AdoDb.Recordset
 Dim theSum As Double
 Dim i As Integer
 
 
-sql = "DECLARE @startDate date='" & Me.txtDateFrom.value & "', @endDate date = '" & Me.txtDateTo.value & "' " _
-    & "SELECT Sum(dd.weightNet)/1000 AS nWeight, s.soldToString + ', ' + cd.companyName + ', ' + cd.companyCountry AS cust " _
+sql = "SELECT Sum(dd.weightNet)/1000 AS nWeight, s.soldToString + ' ' + cd.companyCountry AS cust " _
     & "FROM tbCmr cmr LEFT JOIN tbDeliveryDetail dd ON cmr.detailId=dd.cmrDetailId LEFT JOIN tbSoldTo s ON dd.soldToId = s.soldToId LEFT JOIN tbCompanyDetails cd ON s.companyId = cd.companyId RIGHT JOIN tbTransport t ON cmr.transportId = t.transportId " _
-    & "WHERE t.transportDate >=@startDate And t.transportDate <= @endDate And cd.companyId Is Not Null " _
-    & "GROUP BY s.soldToString + ', ' + cd.companyName + ', ' + cd.companyCountry " _
+    & "WHERE t.transportDate >='" & Me.txtDateFrom.value & "' And t.transportDate <= '" & Me.txtDateTo.value & "' And cd.companyId Is Not Null " _
+    & "GROUP BY s.soldToString + ' ' + cd.companyCountry " _
     & "ORDER BY nWeight DESC;"
 Set rs = newRecordset(sql)
 Set rs.ActiveConnection = Nothing
@@ -66,7 +65,7 @@ If Not rs.EOF Then
     str = "Klient;Wolumen;"
     Do Until rs.EOF
         i = i + 1
-        If i <= 10 Then str = str & rs.fields("cust") & ";" & Round(rs.fields("nWeight"), 1) & ";"
+        If i <= 10 Then str = str & rs.fields("cust") & ";" & Round(rs.fields("nWeight"), 0) & ";"
         rs.MoveNext
     Loop
     str = Left(str, Len(str) - 1)
