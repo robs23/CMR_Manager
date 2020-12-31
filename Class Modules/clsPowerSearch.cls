@@ -79,14 +79,14 @@ For Each ctl In frm.Controls
     End If
 Next ctl
 
-Exit_here:
+exit_here:
 Exit Sub
 
 err_trap:
 If Err.number <> 2465 Then
     MsgBox "Error in ""resultTB_Click"" of ""clsPowerSearch"". Error number = " & Err.number & ", description = " & Err.description
 End If
-Resume Exit_here
+Resume exit_here
 
 End Sub
 
@@ -349,13 +349,13 @@ Set resultTB = frm.Controls(ctlName)
 d = SetTopMostWindow(frm.hwnd, True)
 
 
-Exit_here:
+exit_here:
 Set dbs = Nothing
 Exit Sub
 
 err_trap:
 MsgBox "Error in Sub ""getForm"" of clsPowerSearch." & vbNewLine & "Err no. " & Err.number & ", description: " & Err.description
-Resume Exit_here
+Resume exit_here
 
     
 End Sub

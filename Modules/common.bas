@@ -295,13 +295,13 @@ If Not isArrayEmpty(str) Then
     parseCustVars = str
 End If
 
-Exit_here:
+exit_here:
 Set rs = Nothing
 Exit Function
 
 err_trap:
 MsgBox Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Function
 
@@ -331,14 +331,14 @@ Else
     bringCompanyString = rs.fields("CompanyName") & ", " & rs.fields("companyAddress") & "<br>" & rs.fields("companyCode") & " " & rs.fields("companyCity") & ", " & rs.fields("companyCountry")
 End If
 
-Exit_here:
+exit_here:
 Set db = Nothing
 Set rs = Nothing
 Exit Function
 
 err_trap:
 MsgBox Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Function
 
@@ -360,14 +360,14 @@ checkIfStringExist = True
 End If
 rs.Close
 
-Exit_here:
+exit_here:
 Set db = Nothing
 Set rs = Nothing
 Exit Function
 
 err_trap:
 MsgBox "Error in ""checkIfStringExist"". " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Function
 
@@ -431,6 +431,8 @@ End If
 End Sub
 
 Public Sub logUserOut(userId As Integer)
+On Error GoTo err_trap
+
 Dim rs As ADODB.Recordset
 
 Call newNotify("Trwa zamykanie programu.. Proszę czekać..")
@@ -446,6 +448,13 @@ Call resetAllEdits
 Call killForm("frmNotify")
 
 Set rs = Nothing
+
+exit_here:
+Exit Sub
+
+err_trap:
+MsgBox "Wygląda na to, że utraciłeś kontakt z bazą danych..", vbOKOnly + vbCritical, "Problem z połączeniem"
+Resume exit_here
 
 End Sub
 
@@ -519,13 +528,13 @@ End If
 .Send
 End With
 
-Exit_here:
+exit_here:
 Exit Sub
 
 err_trap:
 Call killForm("frmNotify")
 MsgBox "Error " & Err.number & ". Description: " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Sub
 
@@ -648,12 +657,12 @@ On Error GoTo err_trap
 
 If Not IsMissing(transport) Then
     If transport Then
-       sql = "SELECT u.userName + ' ' + u.userSurname as isBeingEditedBy FROM tbTransport t LEFT JOIN tbUsers u ON u.userId=t.isBeingEditedBy WHERE t.transportId = " & cmr
+       sql = "SELECT u.userName + ' ' + u.userSurname as isBeingEditedByName, u.UserId as isBeingEditedBy FROM tbTransport t LEFT JOIN tbUsers u ON u.userId=t.isBeingEditedBy WHERE t.transportId = " & cmr
     Else
-        sql = "SELECT u.userName + ' ' + u.userSurname as isBeingEditedBy FROM tbCmr c LEFT JOIN tbUsers u ON u.userId=c.isBeingEditedBy WHERE c.cmrId = " & cmr
+        sql = "SELECT u.userName + ' ' + u.userSurname as isBeingEditedByName, u.UserId as isBeingEditedBy FROM tbCmr c LEFT JOIN tbUsers u ON u.userId=c.isBeingEditedBy WHERE c.cmrId = " & cmr
     End If
 Else
-    sql = "SELECT u.userName + ' ' + u.userSurname as isBeingEditedBy FROM tbCmr c LEFT JOIN tbUsers u ON u.userId=c.isBeingEditedBy WHERE c.cmrId = " & cmr
+    sql = "SELECT u.userName + ' ' + u.userSurname as isBeingEditedByName, u.UserId as isBeingEditedBy FROM tbCmr c LEFT JOIN tbUsers u ON u.userId=c.isBeingEditedBy WHERE c.cmrId = " & cmr
 End If
 Set rs = newRecordset(sql)
 Set rs.ActiveConnection = Nothing
@@ -665,18 +674,22 @@ Else
     If IsNull(rs.fields("isBeingEditedBy")) Then
         editable = True
     Else
-        editable = rs.fields("isBeingEditedBy")
+        If rs.fields("isBeingEditedBy") = whoIsLogged Then
+            editable = True
+        Else
+            editable = rs.fields("isBeingEditedByName")
+        End If
     End If
 End If
 rs.Close
 
-Exit_here:
+exit_here:
 Set rs = Nothing
 Exit Function
 
 err_trap:
 MsgBox "Error in ""editable"". " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Function
 
@@ -795,7 +808,7 @@ If Not rs.EOF Then
     Loop
 End If
 
-Exit_here:
+exit_here:
 If Not rs Is Nothing Then
     If rs.state = adStateOpen Then rs.Close
     Set rs = Nothing
@@ -804,7 +817,7 @@ Exit Sub
 
 err_trap:
 MsgBox "Error in ""populateListboxFromSql"". Error number: " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Sub
 
@@ -1068,7 +1081,7 @@ Dim p As DAO.Property
 'DoCmd.Close acForm, "frmAppOpen", acSaveYes
 CurrentDb.Properties("CustomRibbonID").value = ribbonName
 
-Exit_here:
+exit_here:
 Exit Sub
 
 err_trap:
@@ -1077,7 +1090,7 @@ If Err.number = 3270 Then
     CurrentDb.Properties.Append CurrentDb.CreateProperty("CustomRibbonID", dbText, ribbonName)
     If Err.number <> 0 Then MsgBox Err.description
 End If
-Resume Exit_here
+Resume exit_here
 
 End Sub
 
@@ -1092,7 +1105,7 @@ If IsObject(db.TableDefs(tableName)) Then
 End If
 
 
-Exit_here:
+exit_here:
 Exit Function
 
 err_handle:
@@ -1101,7 +1114,7 @@ If Err.number = 3265 Then
 Else
     MsgBox "Nie znaleziono tabeli " & tableName & ". Error " & Err.number
 End If
-Resume Exit_here
+Resume exit_here
 
 End Function
 
@@ -1696,7 +1709,7 @@ Dim tbls As Variant
 Dim i As Integer
 Dim sql As String
 
-tbls = Array("tbCmr", "tbCmrTemplate", "tbCompanyDetails", "tbContacts", "tbTransport")
+tbls = Array("tbCmr", "tbCmrTemplate", "tbCompanyDetails", "tbContacts", "tbTransport", "tbZfin")
 
 updateConnection
 
@@ -1846,7 +1859,7 @@ On Error GoTo err_trap
 
 Set v = col(ind)
 
-Exit_here:
+exit_here:
 If isError Then
     inCollection = False
 Else
@@ -1856,7 +1869,7 @@ Exit Function
 
 err_trap:
 isError = True
-Resume Exit_here
+Resume exit_here
 
 
 End Function
@@ -1944,14 +1957,14 @@ End If
 Set rs.ActiveConnection = Nothing
 rs.Close
 
-Exit_here:
+exit_here:
 Set rs = Nothing
 Exit Function
 
 err_trap:
 adoDLookup = Null
 MsgBox "Error in ""adoDLookup"" in common. Error number: " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Function
 
@@ -1971,14 +1984,14 @@ End If
 Set rs.ActiveConnection = Nothing
 rs.Close
 
-Exit_here:
+exit_here:
 Set rs = Nothing
 Exit Function
 
 err_trap:
 adoDCount = Null
 MsgBox "Error in ""adoDCount"" in common. Error number: " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Function
 
@@ -1995,6 +2008,7 @@ If IsMissing(serverCursor) Then
     
     'newRecordset.Open sql, adoConn, adOpenKeyset, adLockOptimistic
     newRecordset.Open sql, adoConn, adOpenKeyset, adLockBatchOptimistic
+    newRecordset.NextRecordset
 Else
     newRecordset.CursorLocation = adUseServer
     
@@ -2002,14 +2016,14 @@ Else
     newRecordset.Open sql, adoConn, adOpenKeyset, adLockOptimistic
 End If
 
-Exit_here:
+exit_here:
 Exit Function
 
 err_trap:
 If Err.number = 3709 Then
     MsgBox "Wygląda na to, że utraciłeś połączenie z bazą danych. Sprawdź swoje połączenie internetowe i upewnij się, że klient VPN jest zalogowany (jeśli łączysz się zdalnie)", vbCritical + vbOKOnly, "Błąd połączenia"
     killForm "frmNotify"
-    Resume Exit_here
+    Resume exit_here
 End If
 
 End Function

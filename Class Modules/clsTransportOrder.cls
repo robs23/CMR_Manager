@@ -96,7 +96,7 @@ Else
     tipper.visible = False
 End If
 
-Exit_here:
+exit_here:
 Exit Property
 
 err_trap:
@@ -104,7 +104,7 @@ If Err.number = 2165 Then
     Forms("frmWeekView").Controls("cmbWeek").SetFocus
     tb.SpecialEffect = 0
     tipper.visible = False
-    Resume Exit_here
+    Resume exit_here
 End If
 
 End Property
@@ -219,13 +219,13 @@ If Not rs.EOF Then
     rs.Close
 End If
 
-Exit_here:
+exit_here:
 Set rs = Nothing
 Exit Sub
 
 err_trap:
 MsgBox "Error in ""setCmrs"" of clsTransportOrder. Error number: " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Sub
 

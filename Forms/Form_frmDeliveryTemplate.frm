@@ -131,12 +131,12 @@ If mode = 1 Or mode = 2 Then
     End If
 End If
 
-Exit_here:
+exit_here:
 Exit Sub
 
 err_trap:
 MsgBox "Error in ""saveCmr"" of frmDeliveryTemplate. Error number: " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 End Sub
 
 Private Sub cmbCmrTemplate_AfterUpdate()
@@ -325,12 +325,12 @@ Me.cmbCarrierContact.visible = False
 Me.btnDeliveryEdit.Enabled = False
 Me.btnDeliveryEdit.UseTheme = False
 
-Exit_here:
+exit_here:
 Exit Sub
 
 err_trap:
 MsgBox "Error in ""prepareForAdding"" in frmDeliveryTemplate. Error number: " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Sub
 
@@ -415,14 +415,14 @@ End If
 
 ValidateCmr = bool
 
-Exit_here:
+exit_here:
 Set rs = Nothing
 Set db = Nothing
 Exit Function
 
 err_trap:
 MsgBox Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Function
 
@@ -496,12 +496,12 @@ With currentCmr
 End With
 
 
-Exit_here:
+exit_here:
 Exit Sub
 
 err_trap:
 MsgBox "Error in ""loadCmr"". " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Sub
 
@@ -520,13 +520,13 @@ End If
 
 rs.Close
 
-Exit_here:
+exit_here:
 Set rs = Nothing
 Exit Sub
 
 err_trap:
 MsgBox "Error in ""lockCmr"". " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Sub
 
@@ -548,13 +548,13 @@ End If
 
 rs.Close
 
-Exit_here:
+exit_here:
 Set rs = Nothing
 Exit Sub
 
 err_trap:
 MsgBox "Error in ""unlockCmr"". " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Sub
 
@@ -660,7 +660,7 @@ End If
 rs2.Close
 
 
-Exit_here:
+exit_here:
 Set rs = Nothing
 Set rs1 = Nothing
 Set rs2 = Nothing
@@ -670,7 +670,7 @@ Exit Sub
 
 err_trap:
 MsgBox "Error in editCmr. " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Sub
 

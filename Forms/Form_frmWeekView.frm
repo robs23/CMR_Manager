@@ -539,14 +539,14 @@ If Not rs.EOF Then
     Me.lblWorkload.Caption = rs.fields("SlotsTaken").value & " (" & Round(((rs.fields("SlotsTaken").value + rs.fields("Restrictions").value) / rs.fields("SlotsPossible").value) * 100, 1) & "%)"
 End If
 
-Exit_here:
+exit_here:
 rs.Close
 closeConnection
 Exit Sub
 
 err_trap:
 MsgBox "Error in ShowWorkload. " & Err.description, vbOKOnly + vbCritical
-Resume Exit_here
+Resume exit_here
 
 End Sub
 

@@ -47,7 +47,7 @@ End Sub
 
 
 Private Sub updateMe()
-Dim rs As AdoDb.Recordset
+Dim rs As ADODB.Recordset
 Dim sql As String
 Dim chart As Object
 Dim values As String
@@ -164,12 +164,12 @@ Else
     End If
 End If
 
-Exit_here:
+exit_here:
 validate = bool
 Exit Function
 
 err_trap:
 MsgBox "Error in ""validate"" of frmTrucksPerTime. Error number: " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Function

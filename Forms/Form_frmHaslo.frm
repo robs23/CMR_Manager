@@ -54,7 +54,8 @@ If KeyCode = vbKeyReturn Then
         DoEvents
         Call killForm("frmNotify")
         DoEvents
-        Else
+        Call resetAllEdits
+    Else
         DoEvents
         Call killForm("frmNotify")
         DoEvents

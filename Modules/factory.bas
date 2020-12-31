@@ -13,12 +13,12 @@ On Error GoTo err_trap
         CreateSearch.init_properties mainForm:=mForm, subForm:=sForm, searchTxt:=ctrl, sObject:=searchO
     End If
     
-Exit_here:
+exit_here:
    Exit Function
    
 err_trap:
     MsgBox "Error in FuN ""CreateSearch"" of factory." & vbNewLine & "Err no. " & Err.number & ", description: " & Err.description
-    Resume Exit_here
+    Resume exit_here
     
 End Function
 
@@ -30,12 +30,12 @@ On Error GoTo err_trap
     CreateTransportOrder.init_properties tNumber:=tNumber, tId:=tId, tIsFinished:=tIsFinished, ttb:=ttb, ttip:=tip
    
     
-Exit_here:
+exit_here:
    Exit Function
    
 err_trap:
     MsgBox "Error in FuN ""CreateTransportOrder"" of factory." & vbNewLine & "Err no. " & Err.number & ", description: " & Err.description
-    Resume Exit_here
+    Resume exit_here
     
 End Function
 
@@ -48,12 +48,12 @@ On Error GoTo err_trap
     CreateClsListener.init_properties ctrl:=ctrl
     
     
-Exit_here:
+exit_here:
    Exit Function
    
 err_trap:
     MsgBox "Error in FuN ""CreateClsListener"" of factory." & vbNewLine & "Err no. " & Err.number & ", description: " & Err.description
-    Resume Exit_here
+    Resume exit_here
     
 End Function
 
@@ -76,12 +76,12 @@ On Error GoTo err_trap
         End If
     End If
     
-Exit_here:
+exit_here:
    Exit Function
    
 err_trap:
     MsgBox "Error in FuN ""CreatePowerSearch"" of factory." & vbNewLine & "Err no. " & Err.number & ", description: " & Err.description
-    Resume Exit_here
+    Resume exit_here
     
 End Function
 
@@ -93,11 +93,11 @@ On Error GoTo err_trap
     CreateClsMultiSelect.init_properties mForm
 
     
-Exit_here:
+exit_here:
    Exit Function
    
 err_trap:
     MsgBox "Error in FuN ""CreateClsMultiSelect"" of factory." & vbNewLine & "Err no. " & Err.number & ", description: " & Err.description
-    Resume Exit_here
+    Resume exit_here
     
 End Function

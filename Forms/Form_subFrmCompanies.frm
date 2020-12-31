@@ -40,14 +40,14 @@ If Not IsNull(Me!companyId) Then
     Forms("frmBrowseCompany").Controls("btnTrash").Enabled = True
 End If
 
-Exit_here:
+exit_here:
 Exit Sub
 
 err_handler:
 If Err.number <> 2424 Then
     MsgBox "Error in ""Form_click"" of subFrmCompanies. Error no " & Err.number & ", " & Err.description
 End If
-Resume Exit_here
+Resume exit_here
 
 End Sub
 

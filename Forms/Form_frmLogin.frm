@@ -33,7 +33,7 @@ End If
 Me.przyciskZaloguj.Enabled = False
 rs.Close 'Close the recordset
 
-Exit_here:
+exit_here:
 Set rs = Nothing 'Clean up
 Exit Sub
 
@@ -43,7 +43,7 @@ If Err.number = 3151 Then
 Else
     MsgBox "Error in ""LadujListeUserow"" of frmLogin. Error number: " & Err.number & ", " & Err.description, vbOKOnly + vbExclamation, "Błąd"
 End If
-Resume Exit_here
+Resume exit_here
 
 End Sub
 

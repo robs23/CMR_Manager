@@ -87,7 +87,7 @@ Else
     MsgBox "Brak autoryzacji", vbOKOnly + vbInformation, "Brak autoryzacji"
 End If
 
-Exit_here:
+exit_here:
 Exit Sub
 
 err_trap:
@@ -95,7 +95,7 @@ If Err.number = 3021 Or Err.number = 3705 Then
     Resume comeback
 Else
     MsgBox "Error in ""btnPrintAll_Click"" of frmTransport. Error number: " & Err.number & ", " & Err.description
-    Resume Exit_here
+    Resume exit_here
 End If
 End Sub
 

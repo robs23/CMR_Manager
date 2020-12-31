@@ -39,12 +39,12 @@ Else
 End If
 
 
-Exit_here:
+exit_here:
 Exit Sub
 
 err_trap:
 MsgBox "Error in ""updateRegistry"". Error number: " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Sub
 
@@ -64,12 +64,12 @@ reg = CreateObject("WScript.Shell").RegRead(key)
 
 bool = reg
 
-Exit_here:
+exit_here:
 registryKeyExists = bool
 Exit Function
 
 err_trap:
-Resume Exit_here
+Resume exit_here
 
 End Function
 

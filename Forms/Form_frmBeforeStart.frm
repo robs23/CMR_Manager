@@ -41,7 +41,7 @@ End Sub
 
 Private Sub Form_Open(Cancel As Integer)
 Dim userInput As String
-appVersion = DLookup("[currentVersion]", "tbAppVersion", "[versionId]=1")
+appVersion = DLookup("[currentVersion]", "tbAppVersion", "[versionId]=2")
 CurrentDb.Properties("AppTitle").value = "CMR Manager ver. " & Replace(Format(appVersion, "0.00"), ",", ".")
 Application.RefreshTitleBar
 backEndPass = BackendPassword

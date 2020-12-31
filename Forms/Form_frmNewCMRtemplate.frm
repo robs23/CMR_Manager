@@ -281,7 +281,7 @@ End If
 adoConn.Execute iSql
 
 
-Exit_here:
+exit_here:
 If Not rs Is Nothing Then
     If rs.state = 1 Then rs.Close
     Set rs = Nothing
@@ -290,7 +290,7 @@ Exit Sub
 
 err_trap:
 MsgBox "Error number " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Sub
 
@@ -363,14 +363,14 @@ For n = LBound(s) To UBound(s)
 Next n
 
 
-Exit_here:
+exit_here:
 Set rs = Nothing
 Set db = Nothing
 Exit Sub
 
 err_trap:
 MsgBox "Error in ""previewCMR"". " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 End Sub
 
 Private Sub ReplaceVar(varName As String, value As String)
@@ -389,12 +389,12 @@ For Each ctl In Me.Controls
     End If
 Next ctl
 
-Exit_here:
+exit_here:
 Exit Sub
 
 err_trap:
 MsgBox "Error in ""ReplaceVar"". " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Sub
 
@@ -417,7 +417,7 @@ If Not rs.EOF Then
     Next i
 End If
 
-Exit_here:
+exit_here:
 If Not rs Is Nothing Then
     If rs.state = 1 Then rs.Close
     Set rs = Nothing
@@ -426,7 +426,7 @@ Exit Sub
 
 err_trap:
 MsgBox "Error in ""bringTemplate"". " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Sub
 
@@ -447,7 +447,7 @@ If Not rs.EOF Then
     rs.UpdateBatch
 End If
 
-Exit_here:
+exit_here:
 If Not rs Is Nothing Then
     If rs.state = 1 Then rs.Close
     Set rs = Nothing
@@ -456,7 +456,7 @@ Exit Sub
 
 err_trap:
 MsgBox "Error number " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Sub
 

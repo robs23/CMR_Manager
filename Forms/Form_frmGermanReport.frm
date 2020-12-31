@@ -89,7 +89,7 @@ If Not rs.EOF Then
     Call ReplaceVar("UZYTKOWNIK", getUserName(whoIsLogged))
 End If
 
-Exit_here:
+exit_here:
 If Not rs Is Nothing Then
     If rs.state = 1 Then rs.Close
     Set rs = Nothing
@@ -98,7 +98,7 @@ Exit Sub
 
 err_trap:
 MsgBox "Error in ""printCTD"" of clsCmr. Error number: " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 
 End Sub
@@ -118,11 +118,11 @@ For Each ctl In Me.Controls
     End If
 Next ctl
 
-Exit_here:
+exit_here:
 Exit Sub
 
 err_trap:
 MsgBox "Error in ""ReplaceVar"". " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Sub

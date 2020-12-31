@@ -102,7 +102,7 @@ Set rs = newRecordset(sql)
 Set rs.ActiveConnection = Nothing
 Set Me.subfrmWindow.Form.Recordset = rs
 
-Exit_here:
+exit_here:
 Call killForm("frmNotify")
 If Not rs Is Nothing Then
     If rs.state = 1 Then rs.Close
@@ -112,5 +112,5 @@ Exit Sub
 
 err_trap:
 MsgBox "Error in loadData of frmReport. Error number: " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 End Sub

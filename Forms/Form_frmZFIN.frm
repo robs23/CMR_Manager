@@ -37,8 +37,12 @@ If rs.EOF Then
     productEdited = False
 Else
     If Not IsNull(rs.fields("isBeingEditedBy")) Then
-        MsgBox "Produkt jest w tej chwili edytowany przez " & getUserName(rs.fields("isBeingEditedBy")) & ". Spróbuj ponownie później", vbInformation + vbOKOnly, "Produkt w edycji"
-        productEdited = True
+        If rs.fields("isBeingEditedBy") <> whoIsLogged Then
+            MsgBox "Produkt jest w tej chwili edytowany przez " & getUserName(rs.fields("isBeingEditedBy")) & ". Spróbuj ponownie później", vbInformation + vbOKOnly, "Produkt w edycji"
+            productEdited = True
+        Else
+            productEdited = False
+        End If
     Else
         productEdited = False
     End If
@@ -75,6 +79,8 @@ End Sub
 
 
 Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
+On Error GoTo err_trap
+
 If Me.ActiveControl.Name = "txtKillbox1" Then
     Select Case KeyCode
     Case vbKeyO
@@ -91,6 +97,13 @@ If Me.ActiveControl.Name = "txtKillbox1" Then
     KeyCode = 0
     Me.txtKillbox1.SetFocus
 End If
+
+exit_here:
+Exit Sub
+
+err_trap:
+Resume exit_here
+
 End Sub
 
 Private Sub Form_Load()
@@ -358,13 +371,13 @@ ElseIf mode = 2 Then
 End If
 
 
-Exit_here:
+exit_here:
 killForm "frmNotify"
 Exit Sub
 
 err_trap:
 MsgBox "Error in ""SaveZfin"" of frmZfin. Error number: " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Sub
 
@@ -581,11 +594,9 @@ Else
     Set rs = Nothing
 End If
 
-sql = "DECLARE @index int " _
-    & "SET @index = " & zfinId & " " _
-    & "SELECT comp.zfinIndex, comp.zfinName, bom.amount, bom.unit, comp.zfinType, mt.materialTypeName " _
+sql = "SELECT comp.zfinIndex, comp.zfinName, bom.amount, bom.unit, comp.zfinType, mt.materialTypeName " _
     & "FROM tbZfin zfin LEFT JOIN tbBom bom ON bom.zfinId=zfin.zfinId LEFT JOIN tbZfin comp ON comp.zfinId=bom.materialId LEFT JOIN tbMaterialType mt ON mt.materialTypeId=comp.materialType " _
-    & "WHERE zfin.zfinId=@index AND bom.bomRecId=(SELECT TOP(1) br.bomRecId FROM tbBomReconciliation br LEFT JOIN tbBom bm ON bm.bomRecId=br.bomRecId LEFT JOIN tbZfin z ON z.zfinId=bm.zfinId WHERE z.zfinId=@index ORDER BY br.dateAdded DESC)"
+    & "WHERE zfin.zfinId=" & zfinId & " AND bom.bomRecId=(SELECT TOP(1) br.bomRecId FROM tbBomReconciliation br LEFT JOIN tbBom bm ON bm.bomRecId=br.bomRecId LEFT JOIN tbZfin z ON z.zfinId=bm.zfinId WHERE z.zfinId=" & zfinId & " ORDER BY br.dateAdded DESC)"
 
 Set rs = newRecordset(sql)
 Set rs.ActiveConnection = Nothing

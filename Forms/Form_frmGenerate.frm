@@ -427,14 +427,14 @@ i = rs1.fields("cmrId")
 rs1.update
 rs1.Close
 
-Exit_here:
+exit_here:
 Set rs = Nothing
 Set rs1 = Nothing
 Exit Sub
 
 err_trap:
 MsgBox "Error in saveCmr. " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Sub
 

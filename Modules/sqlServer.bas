@@ -16,13 +16,13 @@ Else
     adoConn.CommandTimeout = 90
 End If
 
-Exit_here:
+exit_here:
 Exit Sub
 
 err_trap:
 MsgBox "Wygląda na to, że utraciłeś połączenie z bazą danych. Sprawdź swoje połączenie internetowe i upewnij się, że klient VPN jest zalogowany (jeśli łączysz się zdalnie)", vbCritical + vbOKOnly, "Błąd połączenia"
 'Application.CloseCurrentDatabase
-Resume Exit_here
+Resume exit_here
 
 End Sub
 
@@ -146,7 +146,7 @@ For i = LBound(tbls) To UBound(tbls)
     End If
 Next i
 
-Exit_here:
+exit_here:
 Exit Function
 
 err_trap:
@@ -155,7 +155,7 @@ If Err.number = 3151 Then
 Else
     MsgBox "Error in ""connectSQLServer"" of sqlServer. Error number: " & Err.number & ", " & Err.description, vbOKOnly + vbExclamation, "Błąd"
 End If
-Resume Exit_here
+Resume exit_here
 
 'DoCmd.TransferDatabase acImport, "Microsoft Access", currentBe, acTable, "tbProjectSteps", "tbProjectStepsLocal"
 'DoCmd.TransferDatabase acImport, "Microsoft Access", currentBe, acTable, "tbStepDependencies", "tbStepDependenciesLocal"

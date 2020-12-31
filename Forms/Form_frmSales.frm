@@ -35,20 +35,20 @@ update
 Call killForm("frmNotify")
 buildChart
 
-Exit_here:
+exit_here:
 Exit Sub
 
 err_trap:
 If Err.number <> 1004 Then
     MsgBox "Error in ""frmSales""'s load event. Err number: " & Err.number & ",description: " & Err.description
 End If
-Resume Exit_here
+Resume exit_here
 
 End Sub
 
 
 Sub update()
-Dim rs As AdoDb.Recordset
+Dim rs As ADODB.Recordset
 Dim theSum As Double
 Dim i As Integer
 

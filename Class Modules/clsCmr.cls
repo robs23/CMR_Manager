@@ -329,12 +329,12 @@ On Error GoTo err_trap
 Me.ID = cmrId
 downloadFromDB
 
-Exit_here:
+exit_here:
 Exit Sub
 
 err_trap:
 MsgBox "Error in ""InitializeFromCmrId"" of clsCmr. Error number: " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Sub
 
@@ -439,7 +439,7 @@ With Me
     End If
 End With
 
-Exit_here:
+exit_here:
 If Not rs Is Nothing Then
     If rs.state = 1 Then rs.Close
     Set rs = Nothing
@@ -448,7 +448,7 @@ Exit Sub
 
 err_trap:
 MsgBox "Error in ""downloadFromDB"" of clsCmr. Error number: " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Sub
 
@@ -530,7 +530,7 @@ If decision = vbYes Then
     End If
 End If
 
-Exit_here:
+exit_here:
 If Not rs Is Nothing Then
     If rs.state = 1 Then rs.Close
     Set rs = Nothing
@@ -539,7 +539,7 @@ Exit Sub
 
 err_trap:
 MsgBox "Error in ""printCTD"" of clsCmr. Error number: " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 
 End Sub
@@ -887,14 +887,14 @@ If Me.templateId > 0 Then
     End If
 End If
 
-Exit_here:
+exit_here:
 Set rs = Nothing
 Set db = Nothing
 Exit Sub
 
 err_trap:
 MsgBox Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 End Sub
 
 Private Sub hideUnparsed()

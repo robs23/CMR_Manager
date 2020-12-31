@@ -45,13 +45,13 @@ Else
     MsgBox "Brak uprawnień do skorzystaia z tej funkcji!", vbExclamation + vbOKOnly, "Brak upawnień"
 End If
 
-Exit_here:
+exit_here:
 killForm "frmNotify"
 Exit Sub
 
 err_trap:
 MsgBox "Error in ""btnDelete_Click"" of frmZfinOverview. Error number: " & Err.number & ", " & Err.description
-Resume Exit_here
+Resume exit_here
 
 End Sub
 
