@@ -1409,21 +1409,25 @@ Public Function IsoWeekNumber(InDate As Date) As Long
     IsoWeekNumber = DatePart("ww", InDate, vbMonday, vbFirstFourDays)
 End Function
 
-Public Function Week2Date(weekNo As Long, Optional ByVal Yr As Long = 0, Optional ByVal DOW As VBA.VbDayOfWeek = VBA.VbDayOfWeek.vbUseSystemDayOfWeek, Optional ByVal FWOY As VBA.VbFirstWeekOfYear = VBA.VbFirstWeekOfYear.vbUseSystem) As Date
- ' Returns First Day of week
+Public Function Week2Date(weekNo As Long, Optional ByVal Yr As Long = 0, Optional ByVal DOW As VBA.VbDayOfWeek = VBA.VbDayOfWeek.vbMonday, Optional ByVal FWOY As VBA.VbFirstWeekOfYear = VBA.VbFirstWeekOfYear.vbUseSystem) As Date
+  'Returns First Day of week
  Dim Jan1 As Date
- Dim Sub1 As Boolean
+' Dim Sub1 As Boolean
  Dim ret As Date
-
+'
  If Yr = 0 Then
-   Jan1 = VBA.DateSerial(VBA.year(VBA.Date()), 1, 1)
+    Yr = year(Date)
+   Jan1 = VBA.DateSerial(VBA.year(VBA.Date()), 1, 1 + (weekNo * 7))
  Else
    Jan1 = VBA.DateSerial(Yr, 1, 1)
  End If
- Sub1 = (VBA.Format(Jan1, "ww", DOW, FWOY) = 1)
- ret = VBA.DateAdd("ww", weekNo + Sub1, Jan1)
- ret = ret - VBA.Weekday(ret, DOW) + 1
- Week2Date = ret
+ ret = (Jan1 - Weekday(DateSerial(Yr, 1, 3))) + 4
+' Sub1 = (VBA.Format(Jan1, "ww", DOW, FWOY) = 1)
+' ret = VBA.DateAdd("ww", weekNo + Sub1, Jan1)
+' ret = ret - VBA.Weekday(ret, DOW) + 1
+Week2Date = DateAdd("ww", weekNo - 1, ret)
+'=(DATE(A1;1;1+A2*7)-WEEKDAY(DATE(A1;1;3))+4)
+
 End Function
 
 Public Sub populateListboxSelected(DestForm As Form, formant As ComboBox, values() As String, selectValue As String)
