@@ -525,6 +525,18 @@ Private Sub txtTruckNumbers_AfterUpdate()
 Dim forwarder As Variant
 
 If Not IsNull(Me.txtTruckNumbers) Then
+    If Len(Me.txtTruckNumbers) > 0 Then
+        If InStr(1, Me.txtTruckNumbers, Chr(10)) > 0 Then
+            Me.txtTruckNumbers = Replace(Me.txtTruckNumbers, Chr(10), "/", , , vbTextCompare)
+        End If
+        If InStr(1, Me.txtTruckNumbers, Chr(13)) > 0 Then
+            If InStr(1, Me.txtTruckNumbers, "/") = 0 Then
+                Me.txtTruckNumbers = Replace(Me.txtTruckNumbers, Chr(13), "/", , , vbTextCompare)
+            Else
+                Me.txtTruckNumbers = Replace(Me.txtTruckNumbers, Chr(13), "", , , vbTextCompare)
+            End If
+        End If
+    End If
     If Len(Me.txtTruckNumbers) > 50 Then
         MsgBox "Limit znaków tego pola to 50. Wprowadzony ciąg znaków zostanie obcięty do pierwszych 50 znaków..", vbInformation + vbOKOnly, "Zbyt długi"
         Me.txtTruckNumbers = Left(Me.txtTruckNumbers, 50)

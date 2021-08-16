@@ -2005,7 +2005,7 @@ On Error GoTo err_trap
 
 updateConnection
 
-Set newRecordset = New ADODB.Recordset
+Set newRecordset = CreateObject("adodb.recordset")
 
 If IsMissing(serverCursor) Then
     newRecordset.CursorLocation = adUseClient
